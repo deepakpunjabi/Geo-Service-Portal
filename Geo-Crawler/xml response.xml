@@ -1,0 +1,14 @@
+<root>
+<FeatureType>
+<Name>prov_land</Name>
+<Title>Canadian Land</Title>
+<SRS>EPSG:42304</SRS>
+<LatLongBoundingBox minx="-173.537" miny="35.8775" maxx="-11.9603" maxy="83.8009" />
+</FeatureType>
+- <FeatureType>
+<Name>land_fn</Name>
+<Title>US Land</Title>
+<SRS>EPSG:42304</SRS>
+<LatLongBoundingBox minx="-178.838" miny="31.8844" maxx="179.94" maxy="89.8254" />
+</FeatureType>
+</root>

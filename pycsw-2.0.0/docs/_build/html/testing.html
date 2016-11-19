@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Testing &mdash; pycsw 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="pycsw 2.0.0 documentation" href="index.html" />
+    <link rel="next" title="pycsw Migration Guide" href="migration-guide.html" />
+    <link rel="prev" title="API" href="api.html" />
+ 
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32855587-1']);
+  _gaq.push(['_setDomainName', 'pycsw.org']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+  </head>
+  <body role="document">
+
+<style type="text/css">
+  .header a:link{color: white;}
+  .header a:visited{color: white;}
+  .padded{padding: 10px 10px;}
+</style>
+
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="migration-guide.html" title="pycsw Migration Guide"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="api.html" title="API"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycsw 2.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="testing">
+<span id="id1"></span><h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ogc-cite">
+<span id="id2"></span><h2>OGC CITE<a class="headerlink" href="#ogc-cite" title="Permalink to this headline">¶</a></h2>
+<p>Compliance benchmarking is done via the OGC <a class="reference external" href="http://cite.opengeospatial.org/">Compliance &amp; Interoperability Testing &amp; Evaluation Initiative</a>.  The pycsw <a class="reference external" href="https://github.com/geopython/pycsw/wiki/OGC-CITE-Compliance">wiki</a> documents testing procedures and status.</p>
+</div>
+<div class="section" id="tester">
+<span id="tests"></span><h2>Tester<a class="headerlink" href="#tester" title="Permalink to this headline">¶</a></h2>
+<p>The pycsw tests framework (in <code class="docutils literal"><span class="pre">tests</span></code>) is a collection of testsuites to perform automated regession testing of the codebase.  Test are run against all pushes to the GitHub repository via <a class="reference external" href="http://travis-ci.org/geopython/pycsw">Travis CI</a>.</p>
+<div class="section" id="running-locally">
+<h3>Running Locally<a class="headerlink" href="#running-locally" title="Permalink to this headline">¶</a></h3>
+<p>The tests framework can be run from <code class="docutils literal"><span class="pre">tests</span></code> using <a class="reference external" href="http://paver.github.io/paver/">Paver</a> (see <code class="docutils literal"><span class="pre">pavement.py</span></code>) tasks for convenience:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /path/to/pycsw
+<span class="c1"># run all tests (starts up http://localhost:8000)</span>
+$ paver <span class="nb">test</span>
+<span class="c1"># run tests only against specific testsuites</span>
+$ paver <span class="nb">test</span> -s apiso,fgdc
+<span class="c1"># run all tests, including harvesting (this is turned off by default given the volatility of remote services/data testing)</span>
+$ paver <span class="nb">test</span> -r
+<span class="c1"># run all tests with 1000ms time benchmark</span>
+$ paver <span class="nb">test</span> -t 1000
+</pre></div>
+</div>
+<p>The tests perform HTTP GET and POST requests against <code class="docutils literal"><span class="pre">http://localhost:8000</span></code>.  The expected output for each test can be found in <code class="docutils literal"><span class="pre">expected</span></code>.  Results are categorized as <code class="docutils literal"><span class="pre">passed</span></code>, <code class="docutils literal"><span class="pre">failed</span></code>, or <code class="docutils literal"><span class="pre">initialized</span></code>.  A summary of results is output at the end of the run.</p>
+</div>
+<div class="section" id="failed-tests">
+<h3>Failed Tests<a class="headerlink" href="#failed-tests" title="Permalink to this headline">¶</a></h3>
+<p>If a given test has failed, the output is saved in <code class="docutils literal"><span class="pre">results</span></code>.  The resulting failure can be analyzed by running <code class="docutils literal"><span class="pre">diff</span> <span class="pre">tests/expected/name_of_test.xml</span> <span class="pre">tests/results/name_of_test.xml</span></code> to find variances.  The Paver task returns a status code which indicates the number of tests which have failed (i.e. <code class="docutils literal"><span class="pre">echo</span> <span class="pre">$?</span></code>).</p>
+</div>
+<div class="section" id="test-suites">
+<h3>Test Suites<a class="headerlink" href="#test-suites" title="Permalink to this headline">¶</a></h3>
+<p>The tests framework is run against a series of &#8216;suites&#8217; (in <code class="docutils literal"><span class="pre">tests/suites</span></code>), each of which specifies a given configuration to test various functionality of the codebase.  Each suite is structured as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">tests/suites/suite/default.cfg</span></code>: the configuration for the suite</li>
+<li><code class="docutils literal"><span class="pre">tests/suites/suite/post</span></code>: directory of XML documents for HTTP POST requests</li>
+<li><code class="docutils literal"><span class="pre">tests/suites/suite/get/requests.txt</span></code>: directory and text file of KVP for HTTP GET requests</li>
+<li><code class="docutils literal"><span class="pre">tests/suites/suite/data</span></code>: directory of sample XML data required for the test suite.  Database and test data are setup/loaded automatically as part of testing</li>
+</ul>
+<p>When the tests are invoked, the following operations are run:</p>
+<ul class="simple">
+<li>pycsw configuration is set to <code class="docutils literal"><span class="pre">tests/suites/suite/default.cfg</span></code></li>
+<li>HTTP POST requests are run against <code class="docutils literal"><span class="pre">tests/suites/suite/post/*.xml</span></code></li>
+<li>HTTP GET requests are run against each request in <code class="docutils literal"><span class="pre">tests/suites/suite/get/requests.txt</span></code></li>
+</ul>
+<p>The CSV format of <code class="docutils literal"><span class="pre">tests/suites/suite/get/requests.txt</span></code> is <code class="docutils literal"><span class="pre">testname,request</span></code>, with one line for each test.  The <code class="docutils literal"><span class="pre">testname</span></code> value is a unique test name (this value sets the name of the output file in the test results).  The <code class="docutils literal"><span class="pre">request</span></code> value is the HTTP GET request.  The <code class="docutils literal"><span class="pre">PYCSW_SERVER</span></code> token is replaced at runtime with the URL to the pycsw install.</p>
+</div>
+<div class="section" id="adding-new-tests">
+<h3>Adding New Tests<a class="headerlink" href="#adding-new-tests" title="Permalink to this headline">¶</a></h3>
+<p>To add tests to an existing suite:</p>
+<ul class="simple">
+<li>for HTTP POST tests, add XML documents to <code class="docutils literal"><span class="pre">tests/suites/suite/post</span></code></li>
+<li>for HTTP GET tests, add tests (one per line) to <code class="docutils literal"><span class="pre">tests/suites/suite/get/requests.txt</span></code></li>
+<li>run <code class="docutils literal"><span class="pre">paver</span> <span class="pre">test</span></code></li>
+</ul>
+<p>To add a new test suite:</p>
+<ul class="simple">
+<li>create a new directory under <code class="docutils literal"><span class="pre">tests/suites</span></code> (e.g. <code class="docutils literal"><span class="pre">foo</span></code>)</li>
+<li>create a new configuration in <code class="docutils literal"><span class="pre">tests/suites/foo/default.cfg</span></code><ul>
+<li>Ensure that all file paths are relative to <code class="docutils literal"><span class="pre">path/to/pycsw</span></code></li>
+<li>Ensure that <code class="docutils literal"><span class="pre">repository.database</span></code> points to an SQLite3 database called <code class="docutils literal"><span class="pre">tests/suites/foo/data/records.db</span></code>.  The database <em>must</em> be called <code class="docutils literal"><span class="pre">records.db</span></code> and the directory <code class="docutils literal"><span class="pre">tests/suites/foo/data</span></code> <em>must</em> exist</li>
+</ul>
+</li>
+<li>populate HTTP POST requests in <code class="docutils literal"><span class="pre">tests/suites/foo/post</span></code></li>
+<li>populate HTTP GET requests in <code class="docutils literal"><span class="pre">tests/suites/foo/get/requests.txt</span></code></li>
+<li>if the testsuite requires test data, create <code class="docutils literal"><span class="pre">tests/suites/foo/data</span></code> are store XML file there</li>
+<li>run <code class="docutils literal"><span class="pre">paver</span> <span class="pre">test</span></code> (or <code class="docutils literal"><span class="pre">paver</span> <span class="pre">test</span> <span class="pre">-s</span> <span class="pre">foo</span></code> to test only the new test suite)</li>
+</ul>
+<p>The new test suite database will be created automatically and used as part of tests.</p>
+</div>
+<div class="section" id="web-testing">
+<h3>Web Testing<a class="headerlink" href="#web-testing" title="Permalink to this headline">¶</a></h3>
+<p>You can also use the pycsw tests via your web browser to perform sample requests against your pycsw install.  The tests are is located in <code class="docutils literal"><span class="pre">tests/</span></code>.  To generate the HTML page:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ paver gen_tests_html
+</pre></div>
+</div>
+<p>Then navigate to <code class="docutils literal"><span class="pre">http://host/path/to/pycsw/tests/index.html</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Testing</a><ul>
+<li><a class="reference internal" href="#ogc-cite">OGC CITE</a></li>
+<li><a class="reference internal" href="#tester">Tester</a><ul>
+<li><a class="reference internal" href="#running-locally">Running Locally</a></li>
+<li><a class="reference internal" href="#failed-tests">Failed Tests</a></li>
+<li><a class="reference internal" href="#test-suites">Test Suites</a></li>
+<li><a class="reference internal" href="#adding-new-tests">Adding New Tests</a></li>
+<li><a class="reference internal" href="#web-testing">Web Testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="previous chapter">API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="migration-guide.html"
+                        title="next chapter">pycsw Migration Guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/testing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div><p>
+    <a title="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." href="http://www.opengeospatial.org/resource/products/details/?pid=1325"><img alt="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." src="https://portal.opengeospatial.org/public_ogc/compliance/Certified_OGC_Compliant_Logo_Web.gif" height="74"/></a>
+</p>
+
+<p>
+    <a title="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." href="http://www.opengeospatial.org/resource/products/details/?pid=1325"><img alt="This product conforms to the OpenGIS Catalogue Service Implementation Specification [Catalogue Service for the Web], Revision 2.0.2. OGC, OGC®, and CERTIFIED OGC COMPLIANT are trademarks or registered trademarks of the Open Geospatial Consortium, Inc. in the United States and other countries." src="https://portal.opengeospatial.org/public_ogc/compliance/badge.php?s=CAT%20CSW%202.0.2&r=1" height="38"/></a>
+</p>
+
+<p>
+    <img alt="OSGeo Project" src="http://svn.osgeo.org/osgeo/marketing/logo/png8/150/OSGeo_project.png" height="64"/>
+</p>
+
+<p>
+    <script type="text/javascript" src="https://www.openhub.net/p/488022/widgets/project_thin_badge.js"></script> 
+</p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="migration-guide.html" title="pycsw Migration Guide"
+             >next</a></li>
+        <li class="right" >
+          <a href="api.html" title="API"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pycsw 2.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+<div class="footer">
+    <p>&copy; Copyright 2010-2015, Tom Kralidis This work is licensed under a Creative Commons Attribution 4.0 International License<br/>Last updated on 2016-07-11T19:00:08Z</p>
+    <p>
+        <a href="http://pycsw.org">Website</a> &mdash;
+        <a href="http://pycsw.org/community">Community</a> &mdash;
+        <a href="http://pycsw.org/blog">Blog</a> &mdash;
+        <a href="https://plus.google.com/communities/104084873011085696113">Google+</a> &mdash;
+        <a href="http://pycsw.org/download">Download</a> &mdash;
+        <a href="https://github.com/geopython/pycsw">Source</a> &mdash;
+        <a href="https://github.com/geopython/pycsw/issues">Issues</a> &mdash;
+        <a href="http://lists.osgeo.org/mailman/listinfo/pycsw-devel">Mailing List</a>
+    </p>
+</div>
+
+  </body>
+</html>
